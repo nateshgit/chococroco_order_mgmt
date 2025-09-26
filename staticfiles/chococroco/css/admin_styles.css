@@ -1,0 +1,48 @@
+.invoice-button,
+.delivery-slip-button {
+    /* Inherit font and other text properties from the admin */
+    font: inherit;
+    /* Adjust padding to match admin buttons */
+    padding: 0.5em 1em;
+    /* Other styles */
+    color: #a30c0c; /* White text */
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 4px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    white-space: nowrap;
+    margin-top: 9px; /* Remove top margin */
+    width: auto; /* Adjust width to content */
+    /* Add admin button styles */
+    font-size: 14px; /* Match admin font size */
+    line-height: 1.5; /* Adjust line height for better spacing */
+    font-weight: bold; /* Make the text bold */
+    text-transform: uppercase; /* Make the text uppercase */
+    /* Add a transition for hover effect */
+    transition: background-color 0.2s ease;
+    width: 100%;
+}
+
+.invoice-button {
+    background-color: #08af0e; /* Green */
+    color: white;
+}
+
+.delivery-slip-button {
+    background-color: #b7b8e7; /* Light Purple */
+    color: white;   
+}
+
+/* Hover effect */
+.invoice-button:hover,
+.delivery-slip-button:hover {
+    opacity: 0.8; /* Slightly darken on hover */
+}
+
+.button-icon {
+    vertical-align: middle;
+    margin-right: 5px;
+}

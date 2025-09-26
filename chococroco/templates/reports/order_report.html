@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+
+        h2 {
+            color: #0056b3;
+            display: inline-block; /* Allows alignment with the button */
+            margin-right: auto; /* Pushes the title to the left */
+        }
+
+        h3 {
+            color: #0056b3;
+            margin-top: 30px;
+        }
+
+        /* Home Button Styles */
+        .home-button {
+            display: inline-block;
+            padding: 8px 12px;
+            background-color: #28a745; /* Green color */
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            float: right; /* Aligns the button to the right */
+        }
+
+        .home-button:hover {
+            background-color: #218838; /* Darker green on hover */
+        }
+
+        /* Container for title and button */
+        .header-container {
+            display: flex;
+            align-items: center; /* Vertically aligns items */
+            margin-bottom: 20px; /* Adds spacing below the header */
+        }
+
+        form {
+            margin-bottom: 20px;
+            background-color: #fff;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        form input[type="date"],
+        form select {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            margin-right: 10px;
+        }
+
+        form button {
+            padding: 8px 12px;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden; /* Ensures the border-radius is respected */
+        }
+
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #007bff;
+            color: white;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        tbody tr:hover {
+            background-color: #f9f9f9;
+        }
+
+        img {
+            max-width: 50px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        p {
+            margin-bottom: 10px;
+        }
+
+        strong {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header-container">
+        <h2 >Order Report</h2>
+        <a href="/admin" class="home-button">Home</a>  <!-- Home Button -->
+    </div>
+
+    <form method="get">
+        Start Date: <input type="date" name="start_date" value="{{ filters.start_date }}">
+        End Date: <input type="date" name="end_date" value="{{ filters.end_date }}">
+        Status:
+        <select name="status">
+            <option value="">All</option>
+            <option value="pending" {% if filters.status == 'pending' %}selected{% endif %}>Pending</option>
+            <option value="paid" {% if filters.status == 'paid' %}selected{% endif %}>Paid</option>
+            <option value="cancelled" {% if filters.status == 'cancelled' %}selected{% endif %}>Cancelled</option>
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Customer</th>
+                <th>Product</th>
+                <th>Qty</th>
+                <th>Delivery Cost</th>
+                <th>Other Expense</th>
+                <th>Total</th>
+                <th>Received Amount</th>
+                <th>Pending Amount</th>
+                <th>Order Status</th>
+                <th>Payment Status</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+                <th>Image</th>
+                <th>Profit</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.customer.name }}</td>
+                <td>{{ order.product.name }}</td>
+                <td>{{ order.quantity }}</td>
+                <td>{{ order.delivery_cost }}</td>
+                <td>{{ order.other_expense }}</td>
+                <td>{{ order.total }}</td>
+                <td>{{ order.received_amount }}</td>
+                <td>{{ order.pending_amount }}</td>
+                <td>{{ order.get_order_status_display }}</td>
+                <td>{{ order.get_payment_status_display }}</td>
+                <td>{{ order.created_at|date:"Y-m-d H:i:s" }}</td>
+                <td>{{ order.updated_at|date:"Y-m-d H:i:s" }}</td>
+                <td>
+                    {% if order.image %}
+                    <img src="{{ order.image.url }}" alt="Order Image">
+                    {% else %}
+                    No Image
+                    {% endif %}
+                </td>
+                <td>{{ order.profit }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h3>Summary</h3>
+    <p><strong>Total Sales:</strong> {{ total_sales }}</p>
+    <p><strong>Total Cost:</strong> {{ total_cost }}</p>
+    <p><strong>Total Profit:</strong> {{ total_profit }}</p>
+</body>
+</html>
